@@ -45,19 +45,19 @@ def main(args):
 
     try:
         result["plagdet"], result["recall"], result["precision"], result["granularity"], result["documents"] = character_level_performance(micro_averaged, plag_path, plag_tag_name, det_path, det_tag_name)
-    except Exception, e:
+    except Exception as e:
         result["plagdet"], result["recall"], result["precision"], result["granularity"], result["documents"] = 5 * [0]
         result["char_level_error"] = str(e)
 
     try:
         result["document_level_precision"], result["document_level_recall"], result["document_level_fmeasure"] = document_level_performance(plag_path, det_path, os.path.join(plag_path, 'pairs'), tau_recall, tau_precision)
-    except Exception, e:
+    except Exception as e:
         result["document_level_precision"], result["document_level_recall"], result["document_level_fmeasure"] = 3 * [0]
         result["document_level_error"] = str(e)
 
     try:
         result["case_level_precision"], result["case_level_recall"], result["case_level_fmeasure"] = case_level_performance(plag_path, det_path, os.path.join(plag_path, 'pairs'), tau_recall, tau_precision)
-    except Exception, e:
+    except Exception as e:
         result["case_level_precision"], result["case_level_recall"], result["case_level_fmeasure"] = 3 * [0]
         result["case_level_error"] = str(e)
 
@@ -79,4 +79,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    # sys.exit(main(sys.argv[1:]))

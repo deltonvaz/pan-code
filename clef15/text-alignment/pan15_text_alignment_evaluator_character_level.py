@@ -553,7 +553,9 @@ def main(micro_averaged, plag_path, plag_tag_name, det_path, det_tag_name, outpu
                   '"granularity":"%0.5f",\n' % gran + \
                   '"documents":"%d"\n' % num_files + '}'
 
-    print output_string
+    print(plag)
+
+    print (output_string)
 
     o=open(output_filename, "w")
     o.write(output_string)
@@ -577,5 +579,3 @@ def main(micro_averaged, plag_path, plag_tag_name, det_path, det_tag_name, outpu
 
 if __name__ == '__main__':
     main(*parse_options())
-
-
