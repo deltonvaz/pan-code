@@ -50,7 +50,7 @@ def precision_condition1(r, S, tau_precision):
 def document_level_performance(plag_path, det_path, pairs_file, tau_recall, tau_precision):
 
     # get pairs from pairs_file
-    pairs_file = [x.rstrip() for x in file(pairs_file).readlines()]
+    pairs_file = [x.rstrip() for x in open(pairs_file).readlines()]
     pairs = []
     for p in pairs_file:
         susp, src = p.split(" ")
