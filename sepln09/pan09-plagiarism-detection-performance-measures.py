@@ -276,8 +276,7 @@ def index_annotations(annotations, xref=TREF):
 def extract_annotations_from_files(path, tagname):
     """Returns a set of plagiarism annotations from XML files below path."""
     if not os.path.exists(path):
-        print "Path not accessible:", path
-        sys.exit(2) 
+        print ("Path not accessible:" + path)
     annotations = set()
     xmlfiles = glob.glob(os.path.join(path, '*.xml'))
     xmlfiles.extend(glob.glob(os.path.join(path, os.path.join('*', '*.xml'))))
@@ -419,7 +418,7 @@ class TestPerfMeasures(unittest.TestCase):
 
 def usage():
     """Prints command line usage manual."""
-    print """\
+    print ("""\
 Usage: perfmeasures.py [options]
 
 Options:
@@ -432,7 +431,7 @@ Options:
       --det-tag    Tag name of the detection annotations,
                    default: 'detected-plagiarism'
   -h, --help       Show this message
-"""
+""")
 
 
 def parse_options():
@@ -441,10 +440,9 @@ def parse_options():
         long_options = ["micro", "plag-path=", "plag-tag=", "det-path=",
                         "det-tag=", "help"]
         opts, _ = getopt.getopt(sys.argv[1:], "p:d:h", long_options)
-    except getopt.GetoptError, err:
-        print str(err)
+    except getopt.GetoptError: #, err:
+        print (str(getopt.GetoptError))
         usage()
-        sys.exit(2)
     micro_averaged = False
     plag_path, det_path = "undefined", "undefined"
     plag_tag_name, det_tag_name = "plagiarism", "detected-plagiarism"
@@ -461,38 +459,38 @@ def parse_options():
             det_tag_name = arg
         elif opt in ("-h", "--help"):
             usage()
-            sys.exit()
         else:
             assert False, "Unknown option."
     if plag_path == "undefined":
-        print "Plagiarism path undefined. Use option -p or --plag-path."
-        sys.exit()
+        print ("Plagiarism path undefined. Use option -p or --plag-path.")
     if det_path == "undefined":
-        print "Detections path undefined. Use option -d or --det-path."
-        sys.exit()
+        print ("Detections path undefined. Use option -d or --det-path.")
     return (micro_averaged, plag_path, plag_tag_name, det_path, det_tag_name)
 
 
 def main(micro_averaged, plag_path, plag_tag_name, det_path, det_tag_name):
     """Main method of this module."""        
-    print 'Reading', plag_path
+    print ('Reading ' + plag_path)
     cases = extract_annotations_from_files(plag_path, plag_tag_name)
-    print 'Reading', det_path
+    print ('Reading ' + det_path)
     detections = extract_annotations_from_files(det_path, det_tag_name)
-    print 'Processing... (this may take a while)'
+    print ('Processing... (this may take a while)')
     rec, prec = 0, 0
     if micro_averaged:
         rec, prec = micro_avg_recall_and_precision(cases, detections)
     else:
         rec, prec = macro_avg_recall_and_precision(cases, detections)
     gran = granularity(cases, detections)
-    print 'Plagdet Score', plagdet_score(rec, prec, gran)
-    print 'Recall', rec
-    print 'Precision', prec 
-    print 'Granularity', gran
+    print ('Plagdet Score ' + str(plagdet_score(rec, prec, gran)))
+    print ('Recall ' + str(rec))
+    print ('Precision ' + str(prec))
+    print ('Granularity ' + str(gran))
+    F1 = 2*((prec*rec)/(prec+rec))
+    print ('F1 ' + str(F1))
 
 
 if __name__ == '__main__':   
     main(*parse_options())
 
 
+#python pan09-plagiarism-detection-performance-measures.py -p /Users/delton/TCC/datasets/ECLaPA/multilingual/suspicious --plag-tag artificial-plagiarism -d /Users/delton/TCC/datasets/ECLaPA/multilingual/plagiarism --det-tag artificial-plagiarism
